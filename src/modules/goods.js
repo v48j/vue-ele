@@ -12,9 +12,10 @@ const mutations = {
 
 const actions = {
   getGoods({ commit }) {
-    const uri = "http://localhost:3008/goods"
+    const uri =
+      "https://raw.githubusercontent.com/v48j/vue-ele/master/api/db.json"
     axios.get(uri).then(res => {
-      commit("getGoods", res.data)
+      commit("getGoods", res.data.goods)
     })
   }
 }
