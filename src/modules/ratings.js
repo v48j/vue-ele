@@ -14,9 +14,10 @@ const getters = {}
 
 const actions = {
   getRatings({ commit }) {
-    const uri = "http://localhost:3008/ratings"
+    const uri =
+      "https://raw.githubusercontent.com/v48j/vue-ele/master/api/dbrating.json"
     axios.get(uri).then(res => {
-      commit("getRatings", res.data)
+      commit("getRatings", res.data.ratings)
     })
   }
 }
