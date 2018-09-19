@@ -1,12 +1,28 @@
+import shortId from "shortid"
+
 const state = {
-  playCar: false
+  playCar: false,
+  ball: []
 }
 
 const mutations = {
   goPlay(state) {
-    //state.playCar = !state.playCar
-    state.playCar = false
     state.playCar = true
+    setTimeout(() => {
+      state.playCar = false
+    }, 400)
+  },
+  addBall(state, { x, y }) {
+    const newBall = {
+      position: { x: x, y: y },
+      id: shortId()
+    }
+    state.ball.push(newBall)
+    //console.log(state.ball)
+
+    setTimeout(() => {
+      state.ball.splice(0, 1)
+    }, 800)
   }
 }
 

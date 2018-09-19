@@ -4,9 +4,9 @@
       <i class="iconfont icon-jianhao" @click.stop="$store.commit('subCount',food.id)"></i>
     </span>
     <span class="buy-num" v-show="$store.getters.getCountNum(food.id)">{{$store.getters.getCountNum(food.id)}}</span>
-    <span class="add">
+    <div class="add" ref="addbtn">
       <i class="iconfont icon-jiahao" @click.stop="add(food)"></i>
-    </span>
+    </div>
   </div>
 </template>
 
@@ -21,22 +21,40 @@
     padding: 0 5px;
   }
   .add {
+    position: relative;
+
     i {
       font-size: 20px;
       color: #00b3d4;
+      position: relative;
+      z-index: 10;
     }
   }
 }
 </style>
 
 <script>
+import Ball from "./Ball"
 export default {
   name: "numbutton1",
+  computed: {},
   props: ["food"],
+  data: () => ({
+    active: false
+  }),
+  components: { Ball },
   methods: {
     add(newCart) {
+      console.log(this.$refs.addbtn.getBoundingClientRect())
+      const x = this.$refs.addbtn.getBoundingClientRect().left
+      const y = this.$refs.addbtn.getBoundingClientRect().top
+
       this.$store.commit("addToCart", newCart)
       this.$store.commit("goPlay")
+      this.$store.commit("addBall", {
+        x,
+        y
+      })
     }
   }
 }

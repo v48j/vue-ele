@@ -25,7 +25,16 @@ import Bscroll from "better-scroll"
 import NumButton from "./NumButton.vue"
 export default {
   name: "foodList",
-  props: ["changeTab", "changeShowDetail", "gott"],
+  props: [
+    "changeTab",
+    "changeShowDetail",
+    "gott",
+    "cancelClickMenu",
+    "clickMenu"
+  ],
+  data: () => ({
+    can: false
+  }),
   components: { NumButton },
   computed: {
     goods() {
@@ -60,11 +69,21 @@ export default {
       this.scroll.on("scroll", ({ x, y }) => {
         for (let i = 0; i < this.offsetTopList.length; i++) {
           if (-y < this.offsetTopList[i + 1] || !this.offsetTopList[i + 1]) {
-            this.changeTab(i)
+            if (this.can && !this.clickMenu) {
+              this.changeTab(i)
+            }
             this.gott(i)
             break
           }
         }
+      })
+      this.scroll.on("scrollEnd", () => {
+        this.cancelClickMenu()
+        this.can = false
+      })
+
+      this.scroll.on("beforeScrollStart", () => {
+        this.can = true
       })
     })
   }

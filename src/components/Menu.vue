@@ -35,7 +35,7 @@
 import Bscroll from "better-scroll"
 export default {
   name: "menu1",
-  props: ["goScroll", "nowTab", "changeTab"],
+  props: ["goScroll", "nowTab", "changeTab", "changeClickMenu"],
   computed: {
     goodsNameList() {
       return this.$store.getters.goodsNameList
@@ -43,8 +43,9 @@ export default {
   },
   methods: {
     go(target) {
-      this.goScroll(target)
       this.changeTab(target)
+      this.goScroll(target)
+      this.changeClickMenu()
     }
   },
   mounted() {

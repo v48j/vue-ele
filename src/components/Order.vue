@@ -1,8 +1,8 @@
 <template>
   <div class="order-box">
     <div class="order">
-      <Menu ref="menu" :goScroll="goScroll" :nowTab="nowTab" :changeTab="changeTab" />
-      <FoodList ref="foodlist" :changeTab="changeTab" :changeShowDetail="changeShowDetail" :gott="gott" />
+      <Menu ref="menu" :goScroll="goScroll" :nowTab="nowTab" :changeTab="changeTab" :clickMenu="clickMenu" :changeClickMenu="changeClickMenu" />
+      <FoodList ref="foodlist" :changeTab="changeTab" :changeShowDetail="changeShowDetail" :gott="gott" :clickMenu="clickMenu" :cancelClickMenu="cancelClickMenu" />
     </div>
     <div class="footer" @click="showCar">
       <div class="footer-l">
@@ -21,6 +21,7 @@
         <span v-else class="balance">去结算</span>
       </div>
     </div>
+    <Ball :ballArr="getBall" />
     <GoodDetail :showDetail="showDetail" :changeShowDetail="changeShowDetail" />
     <CartCar :showCartCar="showCartCar" :showCar="showCar" />
   </div>
@@ -31,10 +32,15 @@ import Menu from "../components/Menu"
 import FoodList from "../components/FoodList"
 import GoodDetail from "../components/GoodDetail"
 import CartCar from "../components/CartCar"
+import Ball from "./Ball"
 export default {
   name: "order1",
-  components: { Menu, FoodList, GoodDetail, CartCar },
+  components: { Menu, FoodList, GoodDetail, CartCar, Ball },
   computed: {
+    
+    getBall() {
+      return this.$store.state.animations.ball
+    },
     total() {
       return this.$store.getters.getAllPrice
     },
@@ -45,9 +51,16 @@ export default {
   data: () => ({
     nowTab: 0,
     showDetail: false,
-    showCartCar: false
+    showCartCar: false,
+    clickMenu: false
   }),
   methods: {
+    changeClickMenu() {
+      this.clickMenu = true
+    },
+    cancelClickMenu() {
+      this.clickMenu = false
+    },
     goScroll(target) {
       //获取原生dom元素结点footlist盒子
       const foodlist = this.$refs.foodlist
@@ -58,7 +71,9 @@ export default {
       //获取原生dom元素结点footlist盒子
       const menu = this.$refs.menu
       //使用betterscroll提供的方法转向目标地
-      menu.scroll.scrollToElement(menu.$refs[target][0], 800)
+      if (menu) {
+        menu.scroll.scrollToElement(menu.$refs[target][0], 800)
+      }
     },
     changeTab(target) {
       this.nowTab = target
@@ -167,6 +182,6 @@ export default {
 }
 
 .goScale {
-  animation: scaleCar 0.6s linear 0s forwards;
+  animation: scaleCar 0.4s linear 0s forwards;
 }
 </style>
